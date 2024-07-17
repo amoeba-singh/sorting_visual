@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sorting</title>
+    <link rel="stylesheet" href="sorting1.css">
+</head>
+<body>
+    <h1>Sorting with Visuals</h1>
+    <div id="input-container">
+        <label for="array-input">Enter the numbers: </label>
+        <input type="text" id="array-input" placeholder="example: 6,2,7,3,4,2">
+        <button id="submit-button">Submit</button>
+    </div>
+    <div>
+        <label for="sorting-type">Select a sorting type:</label>
+        <select id="sorting-type">
+            <option value="bubble">Bubble Sort</option>
+            <option value="insertion">Insertion Sort</option>
+            <option value="selection">Selection Sort</option>
+            <option value="quick">Quick Sort</option>
+        </select>
+    </div>
+    <div>
+        <label for="sorting-speed">Select sorting speed:</label>
+        <select id="sorting-speed">
+            <option value="slow">Slow</option>
+            <option value="medium">Medium</option>
+            <option value="fast">Fast</option>
+        </select>
+    </div>
+    <hr>
+    <div id="sorting-steps"></div>
+    <div id="array-display"></div>
+
+    <script>
+        const submitButton = document.getElementById("submit-button");
+        const arrayInput = document.getElementById("array-input");
+        const sortingType = document.getElementById("sorting-type");
+        const sortingSteps = document.getElementById("sorting-steps");
+        const arrayDisplay = document.getElementById("array-display");
+        const sortingSpeed = document.getElementById("sorting-speed");
+
+        submitButton.addEventListener("click", () => {
+            const inputArray = arrayInput.value;
+            const selectedSortingType = sortingType.value;
+            const selectedSortingSpeed = sortingSpeed.value;
+
+            const arr = inputArray.split(",").map(Number);
+
+            displayArray(arr);
+
+            let delay = 1000;
+            if (selectedSortingSpeed === "medium") {
+                delay = 700;
+            }
+            else if (selectedSortingSpeed === "fast") {
+                delay = 400;
+            }
+
+            switch (selectedSortingType) {
+                case "bubble":
+                    bubbleSort(arr, delay);
+                    break;
+                case "insertion":
+                    insertionSort(arr, delay);
+                    break;
+                case "selection":
+                    selectionSort(arr, delay);
+                    break;
+                case "quick":
+                    quickSort(arr, 0, arr.length - 1, delay);
+                    displayArray(arr); // Display the final sorted array
+                    break;
+                default:
+                    break;
+            }
+        });
+
+        function displayArray(arr) {
+            arrayDisplay.innerHTML = arr.map((item, index) => `<div class="array-item" data-index="${index}">${item}</div>`).join("");
+        }
+
+        // Bubble Sort
+        async function bubbleSort(arr, delay) {
+            let n = arr.length;
+            let swapped;
+            do {
+                swapped = false;
+                for (let i = 0; i < n - 1; i++) {
+                    const currentElement = arrayDisplay.children[i];
+                    const nextElement = arrayDisplay.children[i + 1];
+                    currentElement.classList.add("highlighted");
+                    nextElement.classList.add("highlighted");
+
+                    if (arr[i] > arr[i + 1]) {
+                        [arr[i], arr[i + 1]] = [arr[i + 1], arr[i]];
+                        displayArray(arr);
+                        await new Promise(resolve => setTimeout(resolve, delay));
+                        swapped = true;
+                    }
+
+                    currentElement.classList.remove("highlighted");
+                    nextElement.classList.remove("highlighted");
+                }
+            } while (swapped);
+        }
+
+        // Insertion Sort
+        async function insertionSort(arr, delay) {
+            for (let i = 1; i < arr.length; i++) {
+                const current = arr[i];
+                let j = i - 1;
+                while (j >= 0 && arr[j] > current) {
+                    arr[j + 1] = arr[j];
+                    j--;
+                }
+                arr[j + 1] = current;
+                displayArray(arr);
+                await new Promise(resolve => setTimeout(resolve, delay));
+            }
+        }
+
+        // Selection Sort
+        async function selectionSort(arr, delay) {
+            let n = arr.length;
+            for (let i = 0; i < n - 1; i++) {
+                let minIndex = i;
+                for (let j = i + 1; j < n; j++) {
+                    if (arr[j] < arr[minIndex]) {
+                        minIndex = j;
+                    }
+                }
+                if (minIndex !== i) {
+                    [arr[i], arr[minIndex]] = [arr[minIndex], arr[i]];
+                    displayArray(arr);
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                }
+            }
+        }
+
+        // Quick Sort
+        async function quickSort(arr, low, high, delay) {
+            if (low < high) {
+                const partitionIndex = await partition(arr, low, high, delay);
+                await quickSort(arr, low, partitionIndex - 1, delay);
+                await quickSort(arr, partitionIndex + 1, high, delay);
+            }
+        }
+
+        async function partition(arr, low, high, delay) {
+            const pivot = arr[high];
+            let i = low - 1;
+            for (let j = low; j < high; j++) {
+                if (arr[j] < pivot) {
+                    i++;
+                    [arr[i], arr[j]] = [arr[j], arr[i]];
+                }
+            }
+            [arr[i + 1], arr[high]] = [arr[high], arr[i + 1]];
+            displayArray(arr);
+            await new Promise(resolve => setTimeout(resolve, delay));
+            return i + 1;
+        }
+    </script>
+</body>
+</html>

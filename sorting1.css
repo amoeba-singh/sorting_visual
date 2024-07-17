@@ -1,0 +1,66 @@
+h1{
+    text-align: center;
+    background-color:lightgreen;
+}
+body {
+    font-family: Arial, sans-serif;
+    text-align: left;
+    background-color: rgb(185, 241, 185);
+}
+
+#input-container {
+    margin-top: 20px;
+}
+
+#array-input {
+    width: 300px;
+    padding: 5px;
+}
+
+#submit-button {
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5%;
+}
+
+#sorting-type {
+    margin-top: 10px;
+    padding: 5px;
+}
+
+#sorting-speed {
+    margin-top: 10px;
+    padding: 5px;
+}
+
+#sorting-steps {
+    margin-top: 20px;
+    text-align: left;
+}
+
+#array-display {
+    margin-top: 90px;
+    margin-left: 5%;
+    margin-right: 5%;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
+
+.array-item {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    background-color:lightgoldenrodyellow;
+    text-align: center;
+    line-height: 30px;
+    margin: 2px;
+    border-radius: 50%;
+}
+
+.highlighted {
+    background-color:green !important;
+}
